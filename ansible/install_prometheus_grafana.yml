@@ -1,0 +1,29 @@
+- name: Run prometheus and grafana containers
+  hosts: all
+  become: True
+  tasks:
+  - name: Creates directory for dockerfile
+    file:
+      path: /usr/src/monitoring
+      state: directory
+
+  - name: Copy docker-compose file
+    copy: 
+      src='./res/docker-compose.yml' 
+      dest='/usr/src/monitoring/docker-compose.yml' 
+
+  - name: Copy Prometheus directory
+    copy:
+      src='./res/prometheus'
+      dest='/usr/src/monitoring'
+
+  - name: Copy Grafana directory
+    copy:
+      src='./res/grafana'
+      dest='/usr/src/monitoring'
+
+  - name: Run container
+    become: True
+    shell:
+        cmd: "docker compose -f docker-compose.yml up -d"
+        chdir: /usr/src/monitoring/

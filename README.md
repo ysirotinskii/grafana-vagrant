@@ -1,1 +1,1 @@
-# grafana-vagrant
+Running an Ubuntu VM via Vagrant. Two Docker containers -  prometheus and grafana are created inside. Metrics are taken directly from the VM with use node exporter

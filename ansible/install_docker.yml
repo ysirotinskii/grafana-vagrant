@@ -1,0 +1,59 @@
+- name: Install Docker
+  hosts: all
+  become: True
+  tasks:
+    - name: Updating the system
+      apt: 
+        update_cache: yes 
+        force_apt_get: yes 
+        cache_valid_time: 3600
+
+    - name: Installing dependencies
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg2
+          - software-properties-common
+
+    - name: Adding Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adding Docker Repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Installing docker and components
+      apt:  
+        name:
+           - docker-ce
+           - docker-ce-cli
+           - containerd.io
+           - docker-compose-plugin
+        state: present
+
+    - name: Start and enable docker daemon
+      become: yes
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Start and enable containerd daemon
+      become: yes
+      service:
+        name: containerd
+        state: started
+        enabled: yes
+
+
+    - name: Adding vagrant user to docker
+      user: 
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      become: yes
