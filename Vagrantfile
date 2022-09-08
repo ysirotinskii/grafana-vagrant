@@ -13,17 +13,17 @@ Vagrant.configure("2") do |config|
 
     # Installing Node-Exporter on current VM using Ansible.
     config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "./ansible/install_node_exporter.yml"
+        ansible.playbook = "./ansible/node_exporter/install_node_exporter.yml"
     end  
 
     # Installing Docker using Ansible.
     config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "./ansible/install_docker.yml"
+        ansible.playbook = "./ansible/docker/install_docker.yml"
     end
     
     # Installing Prometheus and Grafana using Ansible.
     config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "./ansible/install_prometheus_grafana.yml"     
+        ansible.playbook = "./ansible/prometheus_grafana/install_prometheus_grafana.yml"     
     end
 
 end
